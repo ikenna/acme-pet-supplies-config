@@ -1,0 +1,48 @@
+_format_version: "1.1"
+services:
+  - name: Product_Catalog_API
+    protocol: https
+    host: api.acme-pet-supplies.com
+    port: 443
+    path: /v1/catalog
+    plugins: []
+    routes:
+      - tags:
+          - OAS3_import
+          - OAS3file_product-catalog-api.oas.yaml
+        name: Product_Catalog_API-listCategories
+        methods:
+          - GET
+        paths:
+          - /categories$
+        strip_path: false
+      - tags:
+          - OAS3_import
+          - OAS3file_product-catalog-api.oas.yaml
+        name: Product_Catalog_API-listProductsInCategory
+        methods:
+          - GET
+        paths:
+          - /products$
+        strip_path: false
+      - tags:
+          - OAS3_import
+          - OAS3file_product-catalog-api.oas.yaml
+        name: Product_Catalog_API-viewProduct
+        methods:
+          - GET
+        paths:
+          - /products/(?<productId>[^\/]+)$
+        strip_path: false
+      - tags:
+          - OAS3_import
+          - OAS3file_product-catalog-api.oas.yaml
+        name: Product_Catalog_API-listProductReviews
+        methods:
+          - GET
+        paths:
+          - /reviews$
+        strip_path: false
+    tags:
+      - OAS3_import
+      - OAS3file_product-catalog-api.oas.yaml

@@ -1,0 +1,49 @@
+_format_version: "1.1"
+_info:
+  defaults: {}
+  select_tags:
+  - deck-managed
+services:
+- connect_timeout: 60000
+  enabled: true
+  host: localhost
+  name: product-catalog-api-service
+  path: /
+  plugins:
+  - config:
+      anonymous: null
+      hide_credentials: false
+      key_in_body: false
+      key_in_header: true
+      key_in_query: false
+      key_names:
+      - x-api-key
+      run_on_preflight: true
+    enabled: true
+    name: key-auth
+    protocols:
+    - grpc
+    - grpcs
+    - http
+    - https
+  port: 3050
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: product-catalog-api-service-routes
+    path_handling: v0
+    paths:
+    - /v1/catalog
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  tags:
+  - deck-managed
+  write_timeout: 60000
