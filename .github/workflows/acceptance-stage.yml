@@ -53,9 +53,9 @@ jobs:
           cd api-dir
           prism proxy reference/compliant-product-catalog-api.oas.yaml http://127.0.0.1:8000  --errors  > prism.log 2>&1 &
 
-      - name: Install Portman
+      - name: Install Portman if it is not installed
         run: |
-          npm install -g @apideck/portman
+          npm list @apideck/portman || npm install -g @apideck/portman
 
       - name: Generate and run API contract tests
         run: |
@@ -66,7 +66,7 @@ jobs:
           portman --cliOptionsFile test-config/contract/portman-cli-options.json | tee test-reports/contract.report.txt 
           portman --cliOptionsFile test-config/variation/portman-cli-options.json | tee test-reports/variation.report.txt
 
-      - name: "Upload test report as Github artifact."
+      - name: "Upload test report as Github artifact"
         uses: actions/upload-artifact@v3
         with:
           name: test-reports
