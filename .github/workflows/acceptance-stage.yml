@@ -1,3 +1,4 @@
+---
 name: Acceptance Stage Action
 
 on: 
@@ -34,11 +35,13 @@ jobs:
       - name: Check out api repo to api-dir
         uses: actions/checkout@v3
         with:
-          repo: ikenna/acme-pet-supplies
+          repository: ikenna/acme-pet-supplies
           path: api-dir
 
       - name: Switch to config repo
-        run: "cd config-dir"
+        run: |
+          cd config-dir
+          tree
 
       - name: Ensure no changes applied outside of this repo
         run: "deck diff --non-zero-exit-code"
