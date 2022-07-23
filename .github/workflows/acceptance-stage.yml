@@ -2,8 +2,7 @@ name: Acceptance Stage Action
 
 on: 
   push: 
-    branches:
-      - main
+    branches: [master, main]
 
 env:
   run_number: ${GITHUB_RUN_NUMBER}
