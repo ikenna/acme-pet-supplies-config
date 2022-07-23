@@ -44,7 +44,9 @@ jobs:
           tree
 
       - name: Ensure no changes applied outside of this repo
-        run: "deck diff --non-zero-exit-code"
+        run: | 
+          ls -lash
+          deck diff --non-zero-exit-code
 
       - name: Apply changes to API gateway
         run: "deck sync"
