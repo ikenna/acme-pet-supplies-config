@@ -38,24 +38,20 @@ jobs:
           repository: ikenna/acme-pet-supplies
           path: api-dir
 
-      - name: Switch to config repo
+      - name: Ensure no changes applied outside of this repo
         run: |
           cd config-dir
           tree
-
-      - name: Ensure no changes applied outside of this repo
-        run: | 
-          ls -lash
           deck diff --non-zero-exit-code
 
       - name: Apply changes to API gateway
-        run: "deck sync"
-
-      - name: Switch to API repo
-        run: "cd ../api-dir"
+        run: deck sync
 
       - name: Start Prism validation proxy
-        run: "prism proxy reference/compliant-product-catalog-api.oas.yaml http://127.0.0.1:8000  --errors "  # Listening to API gateway on :8000
+        run: | 
+          cd api-dir
+          prism proxy reference/compliant-product-catalog-api.oas.yaml http://127.0.0.1:8000  --errors
+
       
       - name: Install Portman 
         run: |
