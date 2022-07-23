@@ -51,9 +51,9 @@ jobs:
       - name: Start upstream service and Prism validation proxy
         run: |
           cd api-dir
-          prism mock --port 3050 reference/compliant-product-catalog-api.oas.yaml # Using Prism to mock upstream service
-          prism proxy reference/compliant-product-catalog-api.oas.yaml http://127.0.0.1:8000  --errors --port 4010 > prism.log 2>&1 &
-
+          upstream-mock-start.sh
+          validation-proxy-start.sh
+          
       - name: Install Portman if it is not installed
         run: |
           npm list @apideck/portman || npm install -g @apideck/portman
@@ -63,10 +63,9 @@ jobs:
           cd api-dir
           rm -rf test-reports
           mkdir test-reports
-          set -o pipefail    # Make the pipeline's return status the value of the last (rightmost) command to exit with a non-zero status, 
-          portman --cliOptionsFile test-config/contract/portman-cli-options.json | tee test-reports/contract.report.txt 
-          portman --cliOptionsFile test-config/variation/portman-cli-options.json | tee test-reports/variation.report.txt
-
+          contract-tests-start.sh
+          variation-tests-start.sh
+          
       - name: "Upload test report as Github artifact"
         uses: actions/upload-artifact@v3
         with:

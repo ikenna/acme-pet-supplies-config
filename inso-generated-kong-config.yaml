@@ -7,7 +7,7 @@ services:
     path: /
     plugins: []
     routes:
-      - tags:          
+      - tags:
           - deck-managed
         name: Product_Catalog_API-listCategories
         methods:
@@ -15,7 +15,7 @@ services:
         paths:
           - /v1/catalog/categories$
         strip_path: false
-      - tags:          
+      - tags:
           - deck-managed
         name: Product_Catalog_API-listProductsInCategory
         methods:
@@ -23,7 +23,7 @@ services:
         paths:
           - /v1/catalog/products$
         strip_path: false
-      - tags:                    
+      - tags:
           - deck-managed
         name: Product_Catalog_API-viewProduct
         methods:
@@ -31,7 +31,7 @@ services:
         paths:
           - /v1/catalog/products/(?<productId>[^\/]+)$
         strip_path: false
-      - tags:                    
+      - tags:
           - deck-managed
         name: Product_Catalog_API-listProductReviews
         methods:
@@ -39,5 +39,5 @@ services:
         paths:
           - /v1/catalog/reviews$
         strip_path: false
-    tags:          
+    tags:
       - deck-managed
