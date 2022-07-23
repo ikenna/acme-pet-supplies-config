@@ -16,14 +16,14 @@ jobs:
     runs-on: self-hosted
     steps:
       # Retreive latest spec from github 
-      - name: "Setup artifact repository CLI (Jfrog CLI)" 
-        uses: jfrog/setup-jfrog-cli@v2
-        env:
-          JF_ENV_1: ${{ secrets.JF_SECRET }}
-      - name: "Download latest artifact (Jfrog Artifactory)"
-        run: |
-            jf rt ping
-            jf rt download "default-api-generic-local/com.acmeps/product-catalog-api/" --sort-by=created --sort-order=desc --limit=1
+      # - name: "Setup artifact repository CLI (Jfrog CLI)" 
+      #   uses: jfrog/setup-jfrog-cli@v2
+      #   env:
+      #     JF_ENV_1: ${{ secrets.JF_SECRET }}
+      # - name: "Download latest artifact (Jfrog Artifactory)"
+      #   run: |
+      #       jf rt ping
+      #       jf rt download "default-api-generic-local/com.acmeps/product-catalog-api/" --sort-by=created --sort-order=desc --limit=1
       
 
       - name: Check out config repo to config-dir
