@@ -1,8 +1,8 @@
 ---
 name: Acceptance Stage Action
 
-on: 
-  push: 
+on:
+  push:
     branches: [master, main]
 
 env:
@@ -16,8 +16,8 @@ jobs:
     name: Run acceptance stage tests
     runs-on: self-hosted
     steps:
-      # Retreive latest spec from github 
-      # - name: "Setup artifact repository CLI (Jfrog CLI)" 
+      # Retreive latest spec from github
+      # - name: "Setup artifact repository CLI (Jfrog CLI)"
       #   uses: jfrog/setup-jfrog-cli@v2
       #   env:
       #     JF_ENV_1: ${{ secrets.JF_SECRET }}
@@ -25,7 +25,6 @@ jobs:
       #   run: |
       #       jf rt ping
       #       jf rt download "default-api-generic-local/com.acmeps/product-catalog-api/" --sort-by=created --sort-order=desc --limit=1
-      
 
       - name: Check out config repo to config-dir
         uses: actions/checkout@v3
@@ -45,15 +44,16 @@ jobs:
           deck diff --non-zero-exit-code
 
       - name: Apply changes to API gateway
-        run: deck sync
+        run: |
+          cd config-dir
+          deck sync
 
       - name: Start Prism validation proxy
-        run: | 
+        run: |
           cd api-dir
           prism proxy reference/compliant-product-catalog-api.oas.yaml http://127.0.0.1:8000  --errors
 
-      
-      - name: Install Portman 
+      - name: Install Portman
         run: |
           npm install -g @apideck/portman
 
@@ -68,4 +68,3 @@ jobs:
         with:
           name: test-reports
           path: test-reports
-            
