@@ -48,10 +48,11 @@ jobs:
           cd config-dir
           deck sync
 
-      - name: Start Prism validation proxy
+      - name: Start upstream service and Prism validation proxy
         run: |
           cd api-dir
-          prism proxy reference/compliant-product-catalog-api.oas.yaml http://127.0.0.1:8000  --errors  > prism.log 2>&1 &
+          prism mock --port 3050 reference/compliant-product-catalog-api.oas.yaml # Using Prism to mock upstream service
+          prism proxy reference/compliant-product-catalog-api.oas.yaml http://127.0.0.1:8000  --errors --port 4010 > prism.log 2>&1 &
 
       - name: Install Portman if it is not installed
         run: |
