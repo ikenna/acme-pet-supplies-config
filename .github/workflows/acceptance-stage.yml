@@ -51,8 +51,8 @@ jobs:
       - name: Start upstream service and Prism validation proxy
         run: |
           cd api-dir
-          upstream-mock-start.sh
-          validation-proxy-start.sh
+          ./upstream-mock-start.sh
+          ./validation-proxy-start.sh
           
       - name: Install Portman if it is not installed
         run: |
@@ -63,8 +63,8 @@ jobs:
           cd api-dir
           rm -rf test-reports
           mkdir test-reports
-          contract-tests-start.sh
-          variation-tests-start.sh
+          ./contract-tests-start.sh
+          ./variation-tests-start.sh
           
       - name: "Upload test report as Github artifact"
         uses: actions/upload-artifact@v3
