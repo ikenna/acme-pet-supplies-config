@@ -16,61 +16,56 @@ jobs:
     name: Run acceptance stage tests
     runs-on: self-hosted
     steps:
-      - name: Retreive latest spec from github 
-      - name: Clone latest api config from github
-      - name: "Ensure no changes applied outside of this repo"
-        run: echo "run deck konnect diff --non-zero-exit-code'"
-      - name: "Apply/sync changes to the API gateway"
-      - name: Run Prism proxy
-      - name: Run API tests
-      - name: "Publish API ref to staging portal.."
-        run: echo "Publish API ref to staging portal"
-
       # Retreive latest spec from github 
       - name: "Setup artifact repository CLI (Jfrog CLI)" 
         uses: jfrog/setup-jfrog-cli@v2
         env:
           JF_ENV_1: ${{ secrets.JF_SECRET }}
-      - name: "Upload to artifact repository (Jfrog Artifactory)"
+      - name: "Download latest artifact (Jfrog Artifactory)"
         run: |
             jf rt ping
             jf rt download "default-api-generic-local/com.acmeps/product-catalog-api/" --sort-by=created --sort-order=desc --limit=1
       
 
-      # Clone latest api config from github
-      - name: "Check out master"
+      - name: Check out config repo to config-dir
         uses: actions/checkout@v3
-      
-
-
-        uses: actions/checkout@v3
-      - name: Setup node
-        uses: actions/setup-node@v3
         with:
-          node-version: 14
+          path: config-dir
+
+      - name: Check out api repo to api-dir
+        uses: actions/checkout@v3
+        with:
+          repo: ikenna/acme-pet-supplies
+          path: api-dir
+
+      - name: Switch to config repo
+        run: "cd config-dir"
+
+      - name: Ensure no changes applied outside of this repo
+        run: "deck diff --non-zero-exit-code"
+
+      - name: Apply changes to API gateway
+        run: "deck sync"
+
+      - name: Switch to API repo
+        run: "cd ../api-dir"
+
+      - name: Start Prism validation proxy
+        run: "prism proxy reference/compliant-product-catalog-api.oas.yaml http://127.0.0.1:8000  --errors "  # Listening to API gateway on :8000
+      
       - name: Install Portman 
         run: |
           npm install -g @apideck/portman
-      - name: Generate API unit tests
-        run: |
-          portman --cliOptionsFile test-config/portman-cli-options.json
-      - name: Install Newman  # TODO Replace with https://github.com/marketplace/actions/newman-action 
-        run: |
-          npm install -g newman
-      - name: Run API unit tests (with Newman)
-        run: |
-          newman run output/tests.postman.json 
-  publish-to-artifact-repo: # TODO zip artifacts (spec, generated tests, and postman collections)
-    name: Publish to artifact repo
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Check out master"
-        uses: actions/checkout@v3
-      - name: "Zip API definition, test and config"
-        run: |
-            zip artifacts.zip api.oas.yaml
-     
 
+      - name: Generate and run API contract tests
+        run: |
+          mkdir test-reports
+          portman --cliOptionsFile test-config/contract/portman-cli-options.json > test-reports/contract.report.txt
+          portman --cliOptionsFile test-config/variation/portman-cli-options.json > test-reports/variation.report.txt
 
-
-
+      - name: "Upload test report as Github artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports
+          path: test-reports
+            

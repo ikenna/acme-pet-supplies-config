@@ -1,48 +1,43 @@
 _format_version: "1.1"
 services:
   - name: Product_Catalog_API
-    protocol: https
-    host: api.acme-pet-supplies.com
-    port: 443
-    path: /v1/catalog
+    protocol: http
+    host: localhost
+    port: 8000
+    path: /
     plugins: []
     routes:
-      - tags:
-          - OAS3_import
-          - OAS3file_product-catalog-api.oas.yaml
+      - tags:          
+          - deck-managed
         name: Product_Catalog_API-listCategories
         methods:
           - GET
         paths:
-          - /categories$
+          - /v1/catalog/categories$
         strip_path: false
-      - tags:
-          - OAS3_import
-          - OAS3file_product-catalog-api.oas.yaml
+      - tags:          
+          - deck-managed
         name: Product_Catalog_API-listProductsInCategory
         methods:
           - GET
         paths:
-          - /products$
+          - /v1/catalog/products$
         strip_path: false
-      - tags:
-          - OAS3_import
-          - OAS3file_product-catalog-api.oas.yaml
+      - tags:                    
+          - deck-managed
         name: Product_Catalog_API-viewProduct
         methods:
           - GET
         paths:
-          - /products/(?<productId>[^\/]+)$
+          - /v1/catalog/products/(?<productId>[^\/]+)$
         strip_path: false
-      - tags:
-          - OAS3_import
-          - OAS3file_product-catalog-api.oas.yaml
+      - tags:                    
+          - deck-managed
         name: Product_Catalog_API-listProductReviews
         methods:
           - GET
         paths:
-          - /reviews$
+          - /v1/catalog/reviews$
         strip_path: false
-    tags:
-      - OAS3_import
-      - OAS3file_product-catalog-api.oas.yaml
+    tags:          
+      - deck-managed
