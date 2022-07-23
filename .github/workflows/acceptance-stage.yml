@@ -51,7 +51,7 @@ jobs:
       - name: Start Prism validation proxy
         run: |
           cd api-dir
-          prism proxy reference/compliant-product-catalog-api.oas.yaml http://127.0.0.1:8000  --errors
+          prism proxy ../reference/compliant-product-catalog-api.oas.yaml http://127.0.0.1:8000  --errors  > prism.log 2>&1 & 
 
       - name: Install Portman
         run: |
