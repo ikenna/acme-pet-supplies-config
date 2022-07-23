@@ -59,6 +59,7 @@ jobs:
 
       - name: Generate and run API contract tests
         run: |
+          cd api-dir
           rm -rf test-reports
           mkdir test-reports
           portman --cliOptionsFile test-config/contract/portman-cli-options.json > test-reports/contract.report.txt
