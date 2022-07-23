@@ -69,4 +69,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: test-reports
-          path: test-reports
+          path: api-dir/test-reports
