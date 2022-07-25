@@ -1,5 +1,5 @@
 ---
-name: Acceptance Stage Action
+name: Contract Test Workflow
 
 on:
   push:
