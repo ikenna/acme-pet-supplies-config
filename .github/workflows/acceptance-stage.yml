@@ -66,6 +66,7 @@ jobs:
           mkdir test-reports
           ./contract-tests-start.sh
           ./variation-tests-start.sh
+          ./combined-tests-start.sh
           
       - name: "Upload test report as Github artifact"
         uses: actions/upload-artifact@v3
