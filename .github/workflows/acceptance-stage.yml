@@ -4,6 +4,7 @@ name: Contract Test Workflow
 on:
   push:
     branches: [master, main]
+  workflow_dispatch:
 
 env:
   run_number: ${GITHUB_RUN_NUMBER}
